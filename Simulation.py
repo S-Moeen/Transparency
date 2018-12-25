@@ -1,5 +1,7 @@
 import numpy as np
 class Agent():
+    '''represents each agent in the simulation'''
+
     def __init__(self,initial_belief = 1, old_belief_coefficient = 1, new_signal_coefficient = 1, public_belief_coefficient = 1, friends_signal_coefficient = 1,*args, **kwargs):
         '''initial belief is the agent's prior on state of the world being 1
         coefficients are coefficients in agents linear update '''
@@ -51,14 +53,14 @@ class Simulation():
     def __init__(self, *args, **kwargs):
         pass
     
-    def initialize(self, number_of_agents, transparency = 0.5, initial_belief = 1, old_belief_coefficient = 1, new_signal_coefficient = 1, public_signal_coefficient = 1, p = 0.5):
+    def initialize(self, number_of_agents, transparency = 0.5, initial_belief = 1, initial_public_signal = 1, old_belief_coefficient = 1, new_signal_coefficient = 1, public_signal_coefficient = 1, p = 0.5):
         '''Creates and initializes agents
         p is parameter of the bernouli
         '''
         self.number_of_agents = number_of_agents
         self.agents = [Agent(initial_belief ,old_belief_coefficient ,new_signal_coefficient,public_signal_coefficient) 
                     for i in range(number_of_agents)]
-        self.public_signal = 0.5
+        self.public_signal = initial_public_signal
         self.p = p
         self.transparency = transparency
         for agent in self.agents:
@@ -81,11 +83,11 @@ class Simulation():
             
     def create_signal(self):
         ''' create a signal based on informativeness '''
-        return np.random.binomial(1, self.p, size=1)
+        return np.random.binomial(1, self.p, size=1)[0]
         
 sim = Simulation()
-sim.initialize(10,transparency=1, p = 0.7)
-sim.simulate(10000)
+sim.initialize(100,transparency=1, p = 0.2)
+sim.simulate(1000)
 
     
 
